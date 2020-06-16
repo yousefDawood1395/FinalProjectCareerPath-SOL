@@ -8,6 +8,7 @@ namespace CareerPath.Models.Entities
 {
     public class QuestionExam
     {
+
         [Required]
 
         public int ExamId { get; set; }

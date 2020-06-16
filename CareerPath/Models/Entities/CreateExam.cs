@@ -9,5 +9,6 @@ namespace CareerPath.Models.Entities
     {
         public int UserID { get; set; }
         public string CourseName { get; set; }
+        //public DateTime Date { get; set; }
     }
 }

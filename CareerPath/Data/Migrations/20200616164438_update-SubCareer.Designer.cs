@@ -4,14 +4,16 @@ using CareerPath.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CareerPath.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200616164438_update-SubCareer")]
+    partial class updateSubCareer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,7 +261,7 @@ namespace CareerPath.Data.Migrations
 
             modelBuilder.Entity("CareerPath.Models.Entities.Questions", b =>
                 {
-                    b.Property<int>("QuestId")
+                    b.Property<int>("QuestID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -276,6 +278,9 @@ namespace CareerPath.Data.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
 
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Grade")
                         .HasColumnType("int");
 
@@ -287,12 +292,9 @@ namespace CareerPath.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("courseIdRef")
-                        .HasColumnType("int");
+                    b.HasKey("QuestID");
 
-                    b.HasKey("QuestId");
-
-                    b.HasIndex("courseIdRef");
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Questions");
                 });
@@ -604,9 +606,7 @@ namespace CareerPath.Data.Migrations
                 {
                     b.HasOne("CareerPath.Models.Entities.Course", "Course")
                         .WithMany("Questions")
-                        .HasForeignKey("courseIdRef")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
                 });
 
             modelBuilder.Entity("CareerPath.Models.Entities.SubCareer", b =>

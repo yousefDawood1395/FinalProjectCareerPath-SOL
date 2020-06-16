@@ -33,7 +33,9 @@ namespace CareerPath.Models.Entities
         public string Description { get; set; }
 
 
-        [ForeignKey("CareerIdREf")]
+        [ForeignKey("Career")]
+        public int CareerIdRef { get; set; }
+
         public virtual Career Career { get; set; }
 
         public virtual ICollection<MyUser> users { get; set; }
