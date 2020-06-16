@@ -7,7 +7,7 @@ namespace CareerPath.Models.Entities
 {
     public class CreateExam
     {
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public string CourseName { get; set; }
         //public DateTime Date { get; set; }
     }

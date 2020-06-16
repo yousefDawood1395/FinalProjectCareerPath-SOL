@@ -23,6 +23,6 @@ namespace CareerPath.Models.Entities
 
         public virtual ICollection<UserCourse> UserCourse { get; set; }
         public virtual ICollection<UserExam> UserExam { get; set; }
-        public virtual SubCareer SubCareer { get; set; }
+        //public virtual SubCareer SubCareer { get; set; }
     }
 }

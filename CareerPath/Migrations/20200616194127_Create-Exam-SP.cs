@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CareerPath.Data.Migrations
+namespace CareerPath.Migrations
 {
-    public partial class SpCreateExam : Migration
+    public partial class CreateExamSP : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,10 +32,10 @@ namespace CareerPath.Data.Migrations
                             
                            
                            insert into dbo.QuestExam(ExamId , QuestId ,QuestName ,RightAns)
-                           select @IDOfExam , QuestD ,QuestName ,RightAns
+                           select @IDOfExam , QuestId ,QuestName ,RightAns
                            from (
-                           	select  Questions.QuestD ,Questions.QuestName , Questions.RightAns  ,DENSE_RANK() over(order by (ABS(CHECKSUM(NEWID())) % 1000000 + 100) ) as 'Drank'
-                           	from Questions inner join Course on Questions.CourseId = Course.CourseId AND CourseName = @CourseName
+                           	select  Questions.QuestId ,Questions.QuestName , Questions.RightAns  ,DENSE_RANK() over(order by (ABS(CHECKSUM(NEWID())) % 1000000 + 100) ) as 'Drank'
+                           	from Questions inner join Course on Questions.courseIdRef = Course.CourseId AND CourseName = @CourseName
                            					--inner join Exams on Exams.CourseId = Course.CourseId
                            ) as newTable
                            where Drank<=6

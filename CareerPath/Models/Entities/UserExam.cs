@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,9 +15,7 @@ namespace CareerPath.Models.Entities
 
 
 
-        [Required]
-
-        public int UserId { get; set; }
+        
 
 
 
@@ -38,6 +37,11 @@ namespace CareerPath.Models.Entities
 
         public virtual Course Course { get; set; }
         public virtual Exams Exam { get; set; }
+
+
+        [Required]
+        [ForeignKey("MyUser")]
+        public string UserId { get; set; }
         public virtual MyUser User { get; set; }
     }
 }

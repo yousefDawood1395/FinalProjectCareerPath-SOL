@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CareerPath.Data.Migrations
+namespace CareerPath.Migrations
 {
-    public partial class SPAnswerExam : Migration
+    public partial class AnswerExamSP : Migration
     {
 		protected override void Up(MigrationBuilder migrationBuilder)
 		{
