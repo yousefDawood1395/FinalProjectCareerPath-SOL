@@ -4,16 +4,14 @@ using CareerPath.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CareerPath.Data.Migrations
+namespace CareerPath.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200616165951_Solve-Conflicts")]
-    partial class SolveConflicts
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,17 +122,12 @@ namespace CareerPath.Data.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("SubCareerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.HasIndex("SubCareerId");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -379,8 +372,8 @@ namespace CareerPath.Data.Migrations
 
             modelBuilder.Entity("CareerPath.Models.Entities.UserCourse", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -394,9 +387,6 @@ namespace CareerPath.Data.Migrations
                     b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "CourseId");
 
                     b.HasIndex("CourseId");
@@ -405,15 +395,13 @@ namespace CareerPath.Data.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.HasIndex("UserId1");
-
                     b.ToTable("UserCourse");
                 });
 
             modelBuilder.Entity("CareerPath.Models.Entities.UserExam", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ExamId")
                         .HasColumnType("int");
@@ -434,9 +422,6 @@ namespace CareerPath.Data.Migrations
                     b.Property<int?>("UserGrade")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "ExamId");
 
                     b.HasIndex("CourseId");
@@ -444,8 +429,6 @@ namespace CareerPath.Data.Migrations
                     b.HasIndex("ExamId");
 
                     b.HasIndex("MyRoleId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("UserExam");
                 });
@@ -573,13 +556,6 @@ namespace CareerPath.Data.Migrations
                         .HasForeignKey("CourseId");
                 });
 
-            modelBuilder.Entity("CareerPath.Models.Entities.MyRole", b =>
-                {
-                    b.HasOne("CareerPath.Models.Entities.SubCareer", "SubCareer")
-                        .WithMany()
-                        .HasForeignKey("SubCareerId");
-                });
-
             modelBuilder.Entity("CareerPath.Models.Entities.MyUser", b =>
                 {
                     b.HasOne("CareerPath.Models.Entities.SubCareer", "SubCareer")
@@ -653,7 +629,9 @@ namespace CareerPath.Data.Migrations
 
                     b.HasOne("CareerPath.Models.Entities.MyUser", "User")
                         .WithMany("UserCourse")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CareerPath.Models.Entities.UserExam", b =>
@@ -676,7 +654,9 @@ namespace CareerPath.Data.Migrations
 
                     b.HasOne("CareerPath.Models.Entities.MyUser", "User")
                         .WithMany("UserExam")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

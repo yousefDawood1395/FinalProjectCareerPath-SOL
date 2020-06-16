@@ -80,6 +80,7 @@ namespace CareerPath.Controllers
 
             var userdata = await _userManager.FindByNameAsync(model.UserName);
 
+
           var createdRole =  await _userManager.AddToRoleAsync(userdata, "student");
 
 

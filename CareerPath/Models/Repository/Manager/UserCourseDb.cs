@@ -9,15 +9,14 @@ using System.Threading.Tasks;
 
 namespace CareerPath.Models.Repository.Manager
 {
-    public class UserCourseDb: IUserCourseRepo
+    public class UserCourseDb : IUserCourseRepo
     {
         ApplicationDbContext DB;
 
-        public UserCourseDb(ApplicationDbContext _Db)
+        public UserCourseDb(ApplicationDbContext _DB)
         {
-            DB = _Db;
+            DB = _DB;
         }
-
 
         public async void Add(UserCourse obj)
         {
@@ -52,6 +51,5 @@ namespace CareerPath.Models.Repository.Manager
             DB.Entry(obj).State = EntityState.Modified;
             DB.SaveChanges();
         }
-
     }
 }
