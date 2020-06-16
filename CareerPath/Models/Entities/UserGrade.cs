@@ -9,5 +9,6 @@ namespace CareerPath.Models.Entities
     {
         public int GradeOfUser { get; set; }
 
+
     }
 }

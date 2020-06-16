@@ -11,8 +11,8 @@ namespace CareerPath.Models.Entities
         public Status()
         {
             UserCourse = new HashSet<UserCourse>();
-        }
 
+        }
 
         [Required]
         public int StatusId { get; set; }

@@ -84,13 +84,10 @@ namespace CareerPath.Controllers
             if (subCareer == null)
                 return BadRequest();
 
-            //SubCareer obj = new SubCareer();
+            var career = await Context.Career.SingleOrDefaultAsync(ww => ww.CareerId == subCareer.CareerIdRef);
 
-
-            var career = await Context.Career.SingleOrDefaultAsync(ww => ww.CareerId == subCareer.Career.CareerId);
-
-            //if (career == null)
-            //    return NotFound();
+            if (career == null)
+                return NotFound();
 
             Db.AddSubcareer(subCareer);
             return Created("subCareer has been created", subCareer);
@@ -103,9 +100,11 @@ namespace CareerPath.Controllers
             if (id == null)
                 return BadRequest();
 
-            var subCareer = Db.GetSubcareerById(id);
+            var subCareer = await Db.GetSubcareerById(id);
+
             if (subCareer == null)
                 return NotFound();
+
             Db.deleteSubcareer(id);
             return Ok(subCareer);
         }
