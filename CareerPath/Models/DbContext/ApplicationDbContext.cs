@@ -52,7 +52,7 @@ namespace CareerPath.Data
                 .HasKey(ww => new { ww.UserId, ww.CourseId });
 
             modelBuilder.Entity<Questions>()
-                .HasKey(ww => ww.QuestID);
+                .HasKey(ww => ww.QuestId);
 
             modelBuilder.Entity<Status>()
                 .HasKey(ww => ww.StatusId);

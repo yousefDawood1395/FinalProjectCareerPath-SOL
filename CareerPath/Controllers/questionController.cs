@@ -61,7 +61,7 @@ namespace CareerPath.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateQuestion(int id, Questions questions)
         {
-            if (id != questions.QuestID || id == null)
+            if (id != questions.QuestId || id == null)
             {
                 return BadRequest();
             }
