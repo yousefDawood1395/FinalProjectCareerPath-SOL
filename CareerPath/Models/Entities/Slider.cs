@@ -13,8 +13,5 @@ namespace CareerPath.Models.Entities
         public String Content { get; set; }
         public String Path { get; set; }
         public string Description { get; set; }
-
-
-
     }
 }

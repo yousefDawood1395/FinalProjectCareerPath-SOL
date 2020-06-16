@@ -121,7 +121,7 @@ namespace CareerPath
             services.AddScoped<IquestionRepo, QuestionDb>();
             services.AddScoped<IsubCareerRepo, SubcareerDb>();
             services.AddScoped<ISubCareerCourseRepo, SubCareerCourseDb>();
-            //services.AddScoped<IUserRepo, UserDb>();
+            services.AddScoped<ISliderRepo, SliderDb>();
             services.AddScoped<IUserCourseRepo, UserCourseDb>();
             services.AddScoped<IUserExamRepo, UserExamDb>();
             services.AddScoped<IquestionExam, questionExamDb>();
