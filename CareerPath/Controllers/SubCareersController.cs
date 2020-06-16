@@ -24,7 +24,6 @@ namespace CareerPath.Controllers
             Context = _Context;
         }
 
-        // GET: api/SubCareers
         [HttpGet]
         public async Task<IActionResult> GetSubCareer()
         {
@@ -108,5 +107,6 @@ namespace CareerPath.Controllers
             Db.deleteSubcareer(id);
             return Ok(subCareer);
         }
+
     }
 }

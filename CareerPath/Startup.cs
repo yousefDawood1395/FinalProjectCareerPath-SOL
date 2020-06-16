@@ -20,15 +20,18 @@ using System.Text;
 using Microsoft.AspNetCore.Http.Features;
 using CareerPath.Models.Repository.IManager;
 using CareerPath.Models.Repository.Manager;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CareerPath
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration )
         {
             Configuration = configuration;
         }
+
+
 
         public IConfiguration Configuration { get; }
         string x = "hi";
