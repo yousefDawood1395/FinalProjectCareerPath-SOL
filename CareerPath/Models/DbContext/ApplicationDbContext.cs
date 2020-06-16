@@ -42,6 +42,8 @@ namespace CareerPath.Data
              .HasKey(ww => new { ww.UserId, ww.ExamId });
 
 
+            modelBuilder.Entity<Slider>()
+                .HasKey(ww => ww.SliderID);
 
             //modelBuilder.Entity<User>()
             //        .HasKey(ww => new { ww.UserId });

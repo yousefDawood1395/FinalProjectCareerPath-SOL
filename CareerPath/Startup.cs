@@ -38,7 +38,6 @@ namespace CareerPath
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddCors(options =>
             {
                 options.AddPolicy(x,
@@ -50,6 +49,8 @@ namespace CareerPath
                     builder.AllowAnyHeader();
                 });
             });
+
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLazyLoadingProxies().UseSqlServer(
@@ -146,6 +147,7 @@ namespace CareerPath
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseCors(x);
 
             app.UseRouting();
 
