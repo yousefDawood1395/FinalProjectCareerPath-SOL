@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareerPath.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200616194127_Create-Exam-SP")]
+    [Migration("20200617123047_Create-Exam-SP")]
     partial class CreateExamSP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
