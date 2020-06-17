@@ -104,9 +104,13 @@ namespace CareerPath.Controllers
             var data = await Context.Course.SingleOrDefaultAsync(ww => ww.CourseId == id);
 
 
-
             if (data == null)
                 return NotFound();
+
+            var userCourse = await Context.UserCourse.FirstOrDefaultAsync(ww => ww.CourseId == id);
+
+            if (userCourse != null)
+                return BadRequest(new { message = "this Course Is assigned To Some Users .. So you can't delete it" });
 
             Db.DeleteCourse(id);
             return Ok(data);
