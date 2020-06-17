@@ -38,7 +38,7 @@ namespace CareerPath.Migrations
                            	from Questions inner join Course on Questions.courseIdRef = Course.CourseId AND CourseName = @CourseName
                            					--inner join Exams on Exams.CourseId = Course.CourseId
                            ) as newTable
-                           where Drank<=6
+                           where Drank<=10
                            
                            
                            select * 

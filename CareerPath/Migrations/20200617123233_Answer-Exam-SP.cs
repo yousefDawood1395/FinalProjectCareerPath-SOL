@@ -47,7 +47,7 @@ namespace CareerPath.Migrations
 		
 			 -------------------------------Cursor For Correcting User Exam-------------------------------------------------------
 								
-								    Declare @Grade int=5;
+								    Declare @Grade int=10;
 									Declare @Stusent_Mark int=0;
 									Declare @UserAnswer nvarchar(5);
 									Declare @RightAns nvarchar(5);
