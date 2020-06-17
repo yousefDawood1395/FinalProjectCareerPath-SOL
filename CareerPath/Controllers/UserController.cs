@@ -120,7 +120,7 @@ namespace CareerPath.Controllers
         [HttpPost]
         [Route("Login")]
 
-        public async Task<IActionResult> Login([FromBody] MyUser model)
+        public async Task<IActionResult> Login([FromBody] UserLogin model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { messaget = "invalid registeration info" });
@@ -129,7 +129,7 @@ namespace CareerPath.Controllers
 
             var retrievedUser = await _userManager.FindByNameAsync(model.UserName);
 
-            if(retrievedUser != null && await _userManager.CheckPasswordAsync(retrievedUser,model.PasswordHash))
+            if(retrievedUser != null && await _userManager.CheckPasswordAsync(retrievedUser,model.Password))
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
                 var roleOfUser = "student";
