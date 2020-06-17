@@ -39,10 +39,10 @@ namespace CareerPath.Models.Repository.Manager
             return await Db.Slider.FindAsync(id);
         }
 
-        public async void UpdateSlider(int id, Slider _slider)
+        public void UpdateSlider(int id, Slider _slider)
         {
             Db.Entry(_slider).State = EntityState.Modified;
-            await Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
     }
 }
