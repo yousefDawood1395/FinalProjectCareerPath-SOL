@@ -16,6 +16,8 @@ using CareerPath.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using CareerPath.Models.Repository.IManager;
 
 namespace CareerPath.Controllers
 {
@@ -24,16 +26,11 @@ namespace CareerPath.Controllers
     //[EnableCors]
     public class UserController : ControllerBase
     {
-
         private readonly SignInManager<MyUser> _signInManager;
         private readonly UserManager<MyUser> _userManager;
         private readonly RoleManager<MyRole> _roleManager;
         private readonly ApplicationSetting _AppSetting;
         private readonly ApplicationDbContext _Db;
-
-
-
-
 
         public UserController(
             SignInManager<MyUser> signInManage,
@@ -47,10 +44,7 @@ namespace CareerPath.Controllers
             _roleManager = roleManage;
             _AppSetting = AppSetting.Value;
             _Db = Db;
-
         }
-
-
 
         [HttpPost]
         [Route("Register")]
@@ -74,18 +68,10 @@ namespace CareerPath.Controllers
                 Image = model.Image
             };
 
-        var result =await _userManager.CreateAsync(user, model.PasswordHash);
-
+             var result =await _userManager.CreateAsync(user, model.PasswordHash);
             //Assign Roles 
-
             var userdata = await _userManager.FindByNameAsync(model.UserName);
-
-
-          var createdRole =  await _userManager.AddToRoleAsync(userdata, "student");
-
-
-
-
+            var createdRole =  await _userManager.AddToRoleAsync(userdata, "student");
 
             if(result.Succeeded && createdRole.Succeeded)
             {
@@ -101,17 +87,14 @@ namespace CareerPath.Controllers
             //var r = await _roleManager.FindByNameAsync(model.UserName);
 
                 if (retrievedUser != null && await _userManager.CheckPasswordAsync(retrievedUser, model.PasswordHash))
-            {
-                var token = TokenHelper.CreateToken(retrievedUser, key);
-                var roleOfUser = "student";
-                return Ok(new { Token = token, role = roleOfUser });
-            }
-
+                {
+                    var token = TokenHelper.CreateToken(retrievedUser, key);
+                    var roleOfUser = "student";
+                    return Ok(new { Token = token, role = roleOfUser });
+                }
             }
 
             return BadRequest("UserName Already Exist .. Try Again");
-
-
         }
 
 
@@ -143,19 +126,17 @@ namespace CareerPath.Controllers
         [HttpGet]
         [Route("GetProfile")]
         [Authorize]
-
         public async Task <Object> GetProfile()
         {
             string UserId = User.Claims.FirstOrDefault(ww => ww.Type == "UserId").Value;
             var UserData = await _userManager.FindByIdAsync(UserId);
+
             return UserData;
         }
-
 
         [HttpPut]
         [Route("EditProfile")]
         [Authorize]
-
         public async Task<IActionResult> UpdateProfile([FromBody]MyUser model)
         {
             if (!ModelState.IsValid)
@@ -182,21 +163,16 @@ namespace CareerPath.Controllers
 
         }
 
-
         [HttpGet]
         [Route("GetAllUsers")]
-
         public async Task<IActionResult> GetAllUsers()
         {
-         List<MyUser> AllUsers=  await _Db.Users.ToListAsync();
-
+            List<MyUser> AllUsers=  await _Db.Users.ToListAsync();
             return Ok(AllUsers);
         }
 
-
         [HttpDelete("{id}")]
         [Route("DeleteUser")]
-
         public async Task<IActionResult> DeleteUser([FromHeader] string id)
         {
             if (!ModelState.IsValid)
@@ -206,18 +182,11 @@ namespace CareerPath.Controllers
 
             var user =await _userManager.FindByIdAsync(id);
 
-            
-
             if (user == null)
                 return NotFound();
 
-           
-
             return Ok(await _userManager.DeleteAsync(user));
         }
-
-       
-
     }
 
 }
