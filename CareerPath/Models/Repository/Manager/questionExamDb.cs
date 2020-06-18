@@ -42,6 +42,15 @@ namespace CareerPath.Models.Repository.Manager
             var q5 = obj.Q5;
             var ans6 = obj.Ans6;
             var q6 = obj.Q6;
+            var ans7 = obj.Ans7;
+            var q7 = obj.Q7;
+            var ans8 = obj.Ans8;
+            var q8 = obj.Q8;
+            var ans9 = obj.Ans9;
+            var q9 = obj.Q9;
+            var ans10 = obj.Ans10;
+            var q10 = obj.Q10;
+
 
             var param1 = new SqlParameter("@userID", userID);
             var param2 = new SqlParameter("@examID", examID);
@@ -64,7 +73,19 @@ namespace CareerPath.Models.Repository.Manager
             var param13 = new SqlParameter("@ans6", ans6);
             var param14 = new SqlParameter("@q6", q6);
 
-            var Grade = await Db.UserGrades.FromSqlRaw("AnswerExam  @userID,@examID, @ans1, @q1, @ans2, @q2, @ans3, @q3, @ans4, @q4, @ans5 ,@q5 ,@ans6, @q6", param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14).ToListAsync();
+            var param15 = new SqlParameter("@ans7", ans7);
+            var param16 = new SqlParameter("@q7", q7);
+
+            var param17 = new SqlParameter("@ans8", ans8);
+            var param18 = new SqlParameter("@q8", q8);
+
+            var param19 = new SqlParameter("@ans9", ans9);
+            var param20 = new SqlParameter("@q9", q9);
+
+            var param21 = new SqlParameter("@ans10", ans10);
+            var param22 = new SqlParameter("@q10", q10);
+
+            var Grade = await Db.UserGrades.FromSqlRaw("AnswerExam  @userID,@examID, @ans1, @q1, @ans2, @q2, @ans3, @q3, @ans4, @q4, @ans5 ,@q5 ,@ans6, @q6 ,@ans7, @q7 ,@ans8, @q8 ,@ans9, @q9 ,@ans10, @q10", param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14 , param15 , param16 , param17 , param18 , param19 , param20,param21,param22).ToListAsync();
             return Grade;
         }
 
@@ -80,7 +101,7 @@ namespace CareerPath.Models.Repository.Manager
             param1.SqlDbType = System.Data.SqlDbType.NVarChar;
 
             var param2 = new SqlParameter("@UserID", userID);
-            param2.SqlDbType = System.Data.SqlDbType.Int;
+            param2.SqlDbType = System.Data.SqlDbType.NVarChar;
 
 
             var param3 = new SqlParameter("@data", DateTime.Now);

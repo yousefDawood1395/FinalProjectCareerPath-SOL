@@ -6,7 +6,7 @@ namespace CareerPath.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var SP = @"create proc [dbo].[CreateExam] @CourseName varchar(50) , @userId int , @Date datetime2(7)
+            var SP = @"create proc [dbo].[CreateExam] @CourseName varchar(50) , @userId varchar(50) , @Date datetime2(7)
                            as 
                            BEGIN
                            

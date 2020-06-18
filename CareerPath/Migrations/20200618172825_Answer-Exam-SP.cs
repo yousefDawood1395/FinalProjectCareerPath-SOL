@@ -6,10 +6,11 @@ namespace CareerPath.Migrations
     {
 		protected override void Up(MigrationBuilder migrationBuilder)
 		{
-			var sp = @"create procedure [dbo].[AnswerExam]  @UserId int ,@examId int
+			var sp = @"create procedure [dbo].[AnswerExam]  @UserId varchar(50) ,@examId int
                         ,@ans1 varchar , @Q1 int
                         ,@ans2 varchar, @Q2 int,@ans3 varchar, @Q3 int,@ans4 varchar, @Q4 int,@ans5 varchar, @Q5 int,
-                         @ans6 varchar, @Q6 int
+                         @ans6 varchar, @Q6 int ,@ans7 varchar, @Q7 int ,@ans8 varchar, @Q8 int ,@ans9 varchar, @Q9 int,
+						 @ans10 varchar, @Q10 int
 
                             as
                             BEGIN
@@ -42,6 +43,22 @@ namespace CareerPath.Migrations
 									  update QuestExam 
 									  set UserAnswer = @ans6
 									 where QuestExam.QuestId=@Q6 and QuestExam.ExamId = @examId
+
+									update QuestExam 
+									  set UserAnswer = @ans7
+									 where QuestExam.QuestId=@Q7 and QuestExam.ExamId = @examId
+
+									   update QuestExam 
+									  set UserAnswer = @ans8
+									 where QuestExam.QuestId=@Q8 and QuestExam.ExamId = @examId
+
+									   update QuestExam 
+									  set UserAnswer = @ans9
+									 where QuestExam.QuestId=@Q9 and QuestExam.ExamId = @examId
+
+									   update QuestExam 
+									  set UserAnswer = @ans10
+									 where QuestExam.QuestId=@Q10 and QuestExam.ExamId = @examId
 								
 			 ------------------------------------------End of insert user answer in table QuestExam------------------------------
 		

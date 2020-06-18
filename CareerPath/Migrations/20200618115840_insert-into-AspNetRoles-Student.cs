@@ -2,7 +2,7 @@
 
 namespace CareerPath.Migrations
 {
-    public partial class isertintoAspNetRolesstudent : Migration
+    public partial class insertintoAspNetRolesStudent : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +17,8 @@ namespace CareerPath.Migrations
         {
             var DelQuery = @"delete from AspNetRoles 
                             where Name='student'";
+
+            migrationBuilder.Sql(DelQuery);
         }
     }
 }

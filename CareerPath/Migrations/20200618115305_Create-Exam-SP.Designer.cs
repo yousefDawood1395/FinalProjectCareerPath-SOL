@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareerPath.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200617131838_isert-into-AspNetRoles-student")]
-    partial class isertintoAspNetRolesstudent
+    [Migration("20200618115305_Create-Exam-SP")]
+    partial class CreateExamSP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
