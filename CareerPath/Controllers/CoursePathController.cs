@@ -13,12 +13,12 @@ namespace CareerPath.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SliderController : ControllerBase
+    public class CoursePathController : ControllerBase
     {
-        ISliderRepo Db;
+        ICoursePathRepo Db;
         ApplicationDbContext Context;
 
-        public SliderController(ISliderRepo _Db, ApplicationDbContext _context)
+        public CoursePathController(ICoursePathRepo _Db, ApplicationDbContext _context)
         {
             Db = _Db;
             Context = _context;
@@ -26,19 +26,19 @@ namespace CareerPath.Controllers
 
         // GET: api/Sliders
         [HttpGet]
-        public async Task<IActionResult> GetSliders()
+        public async Task<IActionResult> GetCoursePaths()
         {
-            return Ok(await Db.GetAllSliders());
+            return Ok(await Db.GetAllCoursePath());
         }
 
         // GET: api/Sliders/id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSlider(int id)
+        public async Task<IActionResult> GetCoursePath(int id)
         {
             if (id == null)
                 return BadRequest();
 
-            var course = await Db.GetSliderById(id);
+            var course = await Db.GetCoursePathById(id);
 
             if (course == null)
                 return NotFound();
@@ -48,48 +48,48 @@ namespace CareerPath.Controllers
 
         // PUT: api/Courses/5
         [HttpPut("{id}")]
-        public IActionResult UpdateSlider(int id, Slider _slider)
+        public IActionResult UpdateCoursePath(int id, CoursePath _coursePath)
         {
-            if (id != _slider.SliderID || id == null)
+            if (id != _coursePath.Id || id == null)
                 return BadRequest();
 
             try
             {
-                Db.UpdateSlider(id, _slider);
+                Db.UpdateCoursePath(id, _coursePath);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw new TimeoutException("time exception out in Slider Controller Update");
+                throw new TimeoutException("time exception out in CoursePath Controller Update");
             }
 
-            return Ok(_slider);
+            return Ok(_coursePath);
         }
 
         // POST: api/Courses
         [HttpPost]
-        public IActionResult AddSlider(Slider _slider)
+        public IActionResult AddCoursePath(CoursePath _coursePath)
         {
-            if (_slider == null)
+            if (_coursePath == null)
                 return BadRequest();
 
-            Db.AddSlider(_slider);
-            return Created("Slider has been added", _slider);
+            Db.AddCoursePath(_coursePath);
+            return Created("CoursePath has been added", _coursePath);
         }
 
         // DELETE: api/Courses/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSlider(int id)
+        public async Task<IActionResult> DeleteCoursePath(int id)
         {
             if (id == null)
                 return BadRequest();
 
-            var data = await Context.Slider.SingleOrDefaultAsync(ww => ww.SliderID == id);
+            var data = await Context.CoursePaths.SingleOrDefaultAsync(ww => ww.Id == id);
 
             if (data == null)
                 return NotFound();
 
-            Db.DeleteSlider(id);
+            Db.DeleteCoursePath(id);
             return Ok(data);
         }
     }

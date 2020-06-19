@@ -12,7 +12,7 @@ namespace CareerPath.Models.Entities
         public SubCareer()
         {
             SubCareerCourses = new HashSet<SubCareerCourse>();
-            users = new HashSet<MyUser>();
+            Users = new HashSet<MyUser>();
         }
 
 
@@ -38,7 +38,7 @@ namespace CareerPath.Models.Entities
 
         public virtual Career Career { get; set; }
 
-        public virtual ICollection<MyUser> users { get; set; }
+        public virtual ICollection<MyUser> Users { get; set; }
 
         public virtual ICollection<SubCareerCourse> SubCareerCourses { get; set; }
     }

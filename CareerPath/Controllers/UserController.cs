@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using CareerPath.Helper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CareerPath.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -186,7 +185,7 @@ namespace CareerPath.Controllers
         [Route("GetProfile")]
         [Authorize]
 
-        public async Task <Object> GetProfile()
+        public async Task<Object> GetProfile()
         {
             string UserId = User.Claims.FirstOrDefault(ww => ww.Type == "UserId").Value;
             var UserData = await _userManager.FindByIdAsync(UserId);
@@ -205,9 +204,9 @@ namespace CareerPath.Controllers
                 courseName += d.CourseName + ", ";
                 courseID += d.CourseId + ", ";
             }
-            if(courseName ==null || courseID == null)
+            if (courseName == null || courseID == null)
             {
-                return (new { UserData, Info="User doesn't Have any Courses Yet ." });
+                return (new { UserData, Info = "User doesn't Have any Courses Yet ." });
 
 
             }
@@ -220,18 +219,18 @@ namespace CareerPath.Controllers
             var examCourseId = nullable;
             var examCourseName = nullable;
 
-            foreach(var e in UserExam)
+            foreach (var e in UserExam)
             {
                 examOfUser += e.ExamId + ", ";
                 examCourseId += e.CourseId + ", ";
                 examCourseName += e.Course.CourseName + ", ";
             }
-            if(examOfUser ==null)
+            if (examOfUser == null)
             {
                 return (new { UserData, courseName = courseName, CourseId = courseID, Info = "User doesn't have any Exam Yet ." });
             }
 
-            return (new { UserData ,courseName = courseName , CourseId = courseID , userExam = examOfUser , ExamCourseId = examCourseId , ExamCourseName = examCourseName});
+            return (new { UserData, courseName = courseName, CourseId = courseID, userExam = examOfUser, ExamCourseId = examCourseId, ExamCourseName = examCourseName });
         }
 
 

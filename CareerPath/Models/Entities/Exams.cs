@@ -32,10 +32,10 @@ namespace CareerPath.Models.Entities
         //[Required]
         public int? ExamDuration { get; set; }
 
-        public int? userGrade { get; set; }
+        public int? UserGrade { get; set; }
 
         [Required]
-        public DateTime dateTime { get; set; }
+        public DateTime DateTime { get; set; }
 
         public virtual ICollection<QuestionExam> QuestExam { get; set; }
         public virtual ICollection<UserExam> UserExam { get; set; }
