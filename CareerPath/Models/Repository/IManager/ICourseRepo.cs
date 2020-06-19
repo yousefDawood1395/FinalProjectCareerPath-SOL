@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CareerPath.Models.Repository.IManager
 {
-  public  interface ICourseRepo
+    public  interface ICourseRepo
     {
         public Task<List<Course>> GetAllCourses();
 

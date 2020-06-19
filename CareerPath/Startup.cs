@@ -128,7 +128,7 @@ namespace CareerPath
             services.AddScoped<IUserCourseRepo, UserCourseDb>();
             services.AddScoped<IUserExamRepo, UserExamDb>();
             services.AddScoped<IquestionExam, questionExamDb>();
-
+            services.AddScoped<ICoursePathRepo, CoursePathDb>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

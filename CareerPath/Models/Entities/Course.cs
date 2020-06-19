@@ -15,6 +15,7 @@ namespace CareerPath.Models.Entities
             UserExam = new HashSet<UserExam>();
             Exams = new HashSet<Exams>();
             Questions = new HashSet<Questions>();
+            CoursePaths = new HashSet<CoursePath>();
         }
 
         [Required]
@@ -40,6 +41,9 @@ namespace CareerPath.Models.Entities
         [MaxLength(50)]
         public string Duration { get; set; }
 
+        public string Level { get; set; }
+        public int OrderNumber { get; set; }
+
         public virtual ICollection<SubCareerCourse> SubCareerCourses { get; set; }
         public virtual ICollection<UserCourse> UserCourse { get; set; }
         public virtual ICollection<UserExam> UserExam { get; set; }
@@ -47,5 +51,6 @@ namespace CareerPath.Models.Entities
         public virtual ICollection<Exams> Exams { get; set; }
 
         public virtual ICollection<Questions> Questions { get; set; }
+        public virtual ICollection<CoursePath> CoursePaths { get; set; }
     }
 }
