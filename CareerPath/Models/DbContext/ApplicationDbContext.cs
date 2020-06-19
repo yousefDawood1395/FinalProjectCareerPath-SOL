@@ -76,6 +76,7 @@ namespace CareerPath.Data
         public virtual DbSet<UserCourse> UserCourse { get; set; }
         public virtual DbSet<UserExam> UserExam { get; set; }
         public virtual DbSet<UserGrade> UserGrades { get; set; }
+        public virtual DbSet<CoursePath> CoursePaths { get; set; }
 
 
     }
