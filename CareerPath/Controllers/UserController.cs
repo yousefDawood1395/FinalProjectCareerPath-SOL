@@ -80,14 +80,17 @@ namespace CareerPath.Controllers
                 {
                     Directory.CreateDirectory(_environment.WebRootPath + "\\Upload\\");
                 }
-                using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + obj.Files.FileName))
-                {
-                    await obj.Files.CopyToAsync(fileStream);
-                    await fileStream.FlushAsync();
 
-                   imageName= obj.Files.FileName;
+                     imageName = Guid.NewGuid().ToString() + "-" + obj.Files.FileName;
+                    //var FilePath = Path.Combine(uploadDir)
+                    using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + imageName))
+                    {
+                        await obj.Files.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
 
-                }
+                        //imageName = obj.Files.FileName;
+
+                    }
 
             }
             else
@@ -172,7 +175,7 @@ namespace CareerPath.Controllers
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
                 var roleOfUser = "student";
-                return Ok(new { Token = token, role = roleOfUser });
+                return Ok(new {UserId = retrievedUser.Id ,  Token = token, role = roleOfUser });
             }
 
             else

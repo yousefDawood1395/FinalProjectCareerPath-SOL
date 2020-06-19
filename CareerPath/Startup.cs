@@ -173,6 +173,8 @@ namespace CareerPath
             {
                 endpoints.MapControllers();
             });
+
+           
         }
     }
 }
