@@ -15,6 +15,9 @@ using CareerPath.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using CareerPath.Models.Upload;
 
 namespace CareerPath.Controllers
 {
@@ -29,6 +32,7 @@ namespace CareerPath.Controllers
         private readonly RoleManager<MyRole> _roleManager;
         private readonly ApplicationSetting _AppSetting;
         private readonly ApplicationDbContext _Db;
+        public static IWebHostEnvironment _environment;
 
 
 
@@ -39,13 +43,16 @@ namespace CareerPath.Controllers
             UserManager<MyUser> userManager,
             RoleManager<MyRole> roleManage,
             IOptions<ApplicationSetting> AppSetting,
-            ApplicationDbContext Db)
+            ApplicationDbContext Db,
+            IWebHostEnvironment environment)
         {
             _signInManager = signInManage;
             _userManager = userManager;
             _roleManager = roleManage;
             _AppSetting = AppSetting.Value;
             _Db = Db;
+            _environment = environment;
+            
 
         }
 
@@ -55,10 +62,43 @@ namespace CareerPath.Controllers
         [Route("Register")]
         //[EnableCors]
         // Post api/user/register
-        public async Task<object> Register([FromBody] MyUser model)
+        public async Task<object> Register([FromForm] FileUpload obj , [FromForm] MyUser model)
         {
+            string imageName;
             if (!ModelState.IsValid)
                 return BadRequest(new { messaget = "invalid registeration info"});
+
+            try 
+             { 
+            string Ext = Path.GetExtension(obj.Files.FileName);
+
+            var Len = obj.Files.Length;
+
+            if (Len > 0 && (Ext == ".jpg" || Ext == ".png"))
+            {
+                if (!Directory.Exists(_environment.WebRootPath + "\\Upload\\"))
+                {
+                    Directory.CreateDirectory(_environment.WebRootPath + "\\Upload\\");
+                }
+                using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + obj.Files.FileName))
+                {
+                    await obj.Files.CopyToAsync(fileStream);
+                    await fileStream.FlushAsync();
+
+                   imageName= obj.Files.FileName;
+
+                }
+
+            }
+            else
+            {
+                return BadRequest(new { message = "you should upload a photo" });
+            }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message.ToString());
+            }
 
             var user = new MyUser
             {
@@ -70,7 +110,7 @@ namespace CareerPath.Controllers
                 UserLevel = model.UserLevel,
                 Country = model.Country,
                 Description = model.Description,
-                Image = model.Image
+                Image = imageName
             };
 
         var result =await _userManager.CreateAsync(user, model.PasswordHash);
