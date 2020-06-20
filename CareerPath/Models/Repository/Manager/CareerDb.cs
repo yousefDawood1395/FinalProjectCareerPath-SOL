@@ -33,10 +33,10 @@ namespace CareerPath.Models.Repository.Manager
 
         public async void EditCareer(int id, Career _career)
         {
-            //var oldCareer = await Db.Career.FirstOrDefaultAsync(s => s.CareerId == _career.CareerId);
-            //oldCareer.CareerName = _career.CareerName;
-            //oldCareer.Description = _career.Description;
-            Db.Entry(_career).State = EntityState.Modified;
+            var oldCareer = await Db.Career.FindAsync(id);
+            oldCareer.CareerName = _career.CareerName;
+            oldCareer.Description = _career.Description;
+            //Db.Entry(_career).State = EntityState.Modified;
             Db.SaveChanges();
         }
 
