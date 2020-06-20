@@ -39,6 +39,20 @@ namespace CareerPath.Models.Repository.Manager
 
         }
 
+        public async Task<List<SubCareer>> GetSubcareerByCareerID(int id)
+        {
+            //var data =await (from d in Db.SubCareer
+            //            where d.Career.CareerId == id)
+            //           .select d => new { }).ToListAsync();
+
+            var data =await Db.SubCareer.Where(ww => ww.Career.CareerId == id)
+                        .Select(ww => new SubCareer() { SubCareerId = ww.SubCareerId, SubCareerName = ww.SubCareerName, Description = ww.Description }).ToListAsync();
+
+          
+
+            return data;
+        }
+
         public async Task<SubCareer> GetSubcareerById(int id)
         {
             return await Db.SubCareer.FindAsync(id);
@@ -54,5 +68,7 @@ namespace CareerPath.Models.Repository.Manager
             Db.Entry(subCareer).State = EntityState.Modified;
             Db.SaveChanges();
         }
+
+
     }
 }

@@ -43,6 +43,27 @@ namespace CareerPath.Controllers
 
         }
 
+
+        [HttpGet("getByCareerID/{id}")]
+        public async Task<IActionResult> GetSubCareerByCareerID(int id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var career = await Context.Career.FindAsync(id);
+            if (career == null)
+                return NotFound(new { message = "There is no career with this id" });
+            var data = await Db.GetSubcareerByCareerID(id);
+            if (data == null)
+                return NotFound();
+            return Ok(data);
+
+        }
+
+
+
+
+
         // PUT: api/SubCareers/5
 
         [HttpPut("{id}")]
