@@ -10,6 +10,7 @@ namespace CareerPath.Models.Repository.IManager
     {
         public Task<List<SubCareer>> GettallSubcareer();
         public Task<SubCareer> GetSubcareerById(int id);
+        public Task<List<SubCareer>> GetSubcareerByCareerID(int id);
 
         public void AddSubcareer(SubCareer subCareer);
         public void UpdateSubcareer(int? id, SubCareer subCareer);
