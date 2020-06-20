@@ -159,7 +159,7 @@ namespace CareerPath.Controllers
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
                 var roleOfUser =role ;
-                return Ok(new { Token = token, role = roleOfUser });
+                return Ok(new {UserId = userdata  , Token = token, role = roleOfUser });
             }
 
             }
