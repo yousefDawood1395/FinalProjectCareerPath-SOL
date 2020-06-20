@@ -64,41 +64,55 @@ namespace CareerPath.Controllers
         // Post api/user/register
         public async Task<object> Register([FromForm] FileUpload obj , [FromForm] MyUser model)
         {
-            string imageName;
+            string imageName = null;
             if (!ModelState.IsValid)
                 return BadRequest(new { messaget = "invalid registeration info"});
 
-            try 
-             { 
-            string Ext = Path.GetExtension(obj.Files.FileName);
+         try 
+         { 
 
-            var Len = obj.Files.Length;
+                
+                //var Len = obj.Files.Length;
 
-            if (Len > 0 && (Ext == ".jpg" || Ext == ".png"))
+
+            if (obj.Files !=null)
             {
-                if (!Directory.Exists(_environment.WebRootPath + "\\Upload\\"))
+                    string Ext = Path.GetExtension(obj.Files.FileName);
+
+              if((Ext == ".jpg" || Ext == ".png"))
+              {
+
+
+                    if (!Directory.Exists(_environment.WebRootPath + "\\Upload\\"))
                 {
                     Directory.CreateDirectory(_environment.WebRootPath + "\\Upload\\");
                 }
-                using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + obj.Files.FileName))
-                {
-                    await obj.Files.CopyToAsync(fileStream);
-                    await fileStream.FlushAsync();
 
-                   imageName= obj.Files.FileName;
+                     imageName = Guid.NewGuid().ToString() + "-" + obj.Files.FileName;
+                    //var FilePath = Path.Combine(uploadDir)
+                    using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + imageName))
+                    {
+                        await obj.Files.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
 
-                }
+                        //imageName = obj.Files.FileName;
+
+                    }
+              }
 
             }
-            else
-            {
-                return BadRequest(new { message = "you should upload a photo" });
+                //else
+                //{
+                //    //return BadRequest(new { message = "you should upload a photo" });
+
+                //    imageName = null;
+                //}
+
             }
-            }
-            catch (Exception e)
-            {
+         catch (Exception e)
+         {
                 return BadRequest(e.Message.ToString());
-            }
+         }
 
             var user = new MyUser
             {
@@ -172,7 +186,7 @@ namespace CareerPath.Controllers
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
                 var roleOfUser = "student";
-                return Ok(new { Token = token, role = roleOfUser });
+                return Ok(new {UserId = retrievedUser.Id ,  Token = token, role = roleOfUser });
             }
 
             else
@@ -238,7 +252,7 @@ namespace CareerPath.Controllers
         [Route("EditProfile")]
         [Authorize]
 
-        public async Task<IActionResult> UpdateProfile([FromBody]MyUser model)
+        public async Task<IActionResult> UpdateProfile([FromForm] FileUpload obj, [FromForm] MyUser model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "invalid Edited Information" });
@@ -248,6 +262,37 @@ namespace CareerPath.Controllers
             if (user == null)
                 return NotFound(new { message = "invalid Edited Information User Not Found" });
 
+            string imageName = user.Image;
+
+            if(obj.Files!=null)
+            {
+                string Ext = Path.GetExtension(obj.Files.FileName);
+
+                if ((Ext == ".jpg" || Ext == ".png"))
+                {
+
+
+                    if (!Directory.Exists(_environment.WebRootPath + "\\Upload\\"))
+                    {
+                        Directory.CreateDirectory(_environment.WebRootPath + "\\Upload\\");
+                    }
+
+                    imageName = Guid.NewGuid().ToString() + "-" + obj.Files.FileName;
+                    //var FilePath = Path.Combine(uploadDir)
+                    using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + imageName))
+                    {
+                        await obj.Files.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
+
+                        //imageName = obj.Files.FileName;
+
+                    }
+                }
+
+            }
+           
+
+
             user.UserName = model.UserName;
             user.Email = model.Email;
             user.Fname = model.Fname;
@@ -256,7 +301,7 @@ namespace CareerPath.Controllers
             user.UserLevel = model.UserLevel;
             user.Country = model.Country;
             user.Description = model.Description;
-            user.Image = model.Image;
+            user.Image = imageName;
 
 
             var EditedUser = await _userManager.UpdateAsync(user);
