@@ -161,7 +161,7 @@ namespace CareerPath.Controllers
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
                 var roleOfUser =role ;
-                return Ok(new {UserId = userdata  , Token = token, role = roleOfUser });
+                return Ok(new {UserId = userdata.Id , SubCareerId = userdata.SubCareerId  , Token = token, role = roleOfUser });
             }
 
             }
