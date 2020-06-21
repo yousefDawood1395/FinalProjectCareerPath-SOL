@@ -8,6 +8,7 @@ using CareerPath.Models.Repository.IManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace CareerPath.Controllers
 {
@@ -68,10 +69,15 @@ namespace CareerPath.Controllers
 
         // POST: api/Courses
         [HttpPost]
-        public IActionResult AddCoursePath(CoursePath _coursePath)
+        public async Task<IActionResult> AddCoursePath(CoursePath _coursePath)
         {
             if (_coursePath == null)
                 return BadRequest();
+
+            var course =await Context.Course.FindAsync(_coursePath.CourseId);
+
+            if (course == null)
+                return NotFound(new { message = "there is no course with this id" });
 
             Db.AddCoursePath(_coursePath);
             return Created("CoursePath has been added", _coursePath);

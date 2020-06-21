@@ -15,6 +15,9 @@ namespace CareerPath.Models.Entities
         //[Column(TypeName = "Money")]
         public string Payment { get; set; }
 
+        [ForeignKey("Course")]
+        public int CourseId { get; set; }
+
         public virtual Course Course { get; set; }
     }
 }
