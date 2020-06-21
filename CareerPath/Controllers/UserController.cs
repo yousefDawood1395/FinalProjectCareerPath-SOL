@@ -124,7 +124,9 @@ namespace CareerPath.Controllers
                 UserLevel = model.UserLevel,
                 Country = model.Country,
                 Description = model.Description,
-                Image = imageName
+                Image = imageName,
+                SubCareerId=model.SubCareerId
+                
             };
 
         var result =await _userManager.CreateAsync(user, model.PasswordHash);

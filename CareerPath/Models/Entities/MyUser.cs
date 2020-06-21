@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -52,6 +53,9 @@ namespace CareerPath.Models.Entities
 
         public virtual ICollection<UserCourse> UserCourse { get; set; }
         public virtual ICollection<UserExam> UserExam { get; set; }
+
+        [ForeignKey("SubCareer")]
+        public int SubCareerId { get; set; }
         public virtual SubCareer SubCareer { get; set; }
     }
 }
