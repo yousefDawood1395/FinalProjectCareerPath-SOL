@@ -124,7 +124,9 @@ namespace CareerPath.Controllers
                 UserLevel = model.UserLevel,
                 Country = model.Country,
                 Description = model.Description,
-                Image = imageName
+                Image = imageName,
+                SubCareerId=model.SubCareerId
+                
             };
 
         var result =await _userManager.CreateAsync(user, model.PasswordHash);
@@ -159,7 +161,7 @@ namespace CareerPath.Controllers
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
                 var roleOfUser =role ;
-                return Ok(new {UserId = userdata  , Token = token, role = roleOfUser });
+                return Ok(new {UserId = userdata.Id , SubCareerId = userdata.SubCareerId  , Token = token, role = roleOfUser });
             }
 
             }
