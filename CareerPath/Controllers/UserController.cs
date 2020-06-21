@@ -212,7 +212,7 @@ namespace CareerPath.Controllers
             var UserData = await _userManager.FindByIdAsync(UserId);
 
             var userCourse = (from u in _Db.Users
-                              join uc in _Db.UserCourse on u.Id equals uc.UserId
+                              join uc in _Db.UserCourse on u.Id equals UserId
                               join c in _Db.Course on uc.CourseId equals c.CourseId
                               select c);
 

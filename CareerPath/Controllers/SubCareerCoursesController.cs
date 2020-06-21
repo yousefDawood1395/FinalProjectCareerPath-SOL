@@ -36,7 +36,7 @@ namespace CareerPath.Controllers
 
         [HttpGet("withSubCareer")]
 
-        public async Task<IActionResult> GetAllSubCareerCourses()
+        public async Task<IActionResult> GetAllCoursesWithSubCareers()
         {
             if (!ModelState.IsValid)
                 return BadRequest();

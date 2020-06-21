@@ -51,7 +51,7 @@ namespace CareerPath.Models.Repository.Manager
             var data =await (from s in DB.SubCareer
                         join sc in DB.SubCareerCourse on s.SubCareerId equals sc.SubCareerId
                         join c in DB.Course on sc.CourseId equals c.CourseId
-                        select  new {courseId=c.CourseId, courseName=c.CourseName, subCareer=s.SubCareerId }).ToListAsync();
+                        select  new {courseId=c.CourseId, courseName=c.CourseName, subCareer=s.SubCareerId , Description = c.Description }).ToListAsync();
 
          List<CoursesWithSubCareers> coursesWithSub = new List<CoursesWithSubCareers>();
 
@@ -63,6 +63,7 @@ namespace CareerPath.Models.Repository.Manager
                     courseID = item.courseId,
                     courseName = item.courseName,
                     subCareerID = item.subCareer,
+                    Description = item.Description
                 };
 
                 coursesWithSub.Add(obj);

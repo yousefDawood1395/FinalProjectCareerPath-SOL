@@ -7,6 +7,7 @@ using CareerPath.Models.Entities;
 using CareerPath.Models.Repository.IManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CareerPath.Controllers
 {
@@ -58,7 +59,12 @@ namespace CareerPath.Controllers
         public async Task<IActionResult> CreateExam([FromBody] CreateExam obj)
         {
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var course = await Context.Course.SingleOrDefaultAsync(ww => ww.CourseName == obj.CourseName);
+            if (course == null)
+                return NotFound(new { message = "there is no course with this name" });
 
                 return Ok(await DB.CreateExam(obj));
 
@@ -76,5 +82,8 @@ namespace CareerPath.Controllers
 
             return BadRequest();
         }
+
+
+
     }
 }

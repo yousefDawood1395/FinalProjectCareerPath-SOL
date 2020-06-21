@@ -36,6 +36,52 @@ namespace CareerPath.Models.Repository.Manager
             return await DB.UserExam.ToListAsync();
         }
 
+        public async Task<List<ExamInfoAboutUser>> GetAllExamInfoAboutUser(string UserName)
+        {
+            string IdOfUser = await (from u in DB.Users
+                               where u.UserName == UserName
+                               select u.Id).SingleOrDefaultAsync();
+
+            var data =await (from u in DB.Users
+                        join ue in DB.UserExam on
+                        u.Id equals ue.UserId
+                        join e in DB.Exams on ue.ExamId equals e.ExamId
+                        join c in DB.Course on ue.CourseId equals c.CourseId
+                        where u.Id == IdOfUser
+                        select new
+                        {
+                            ExamID = e.ExamId,
+                            ExamName = e.ExamName,
+                            UserName = UserName,
+                            CourseID = c.CourseId,
+                            CourseName = c.CourseName,
+                            DateTime = e.DateTime
+
+                        }).ToListAsync();
+
+
+            List<ExamInfoAboutUser> examInfoAboutUsers = new List<ExamInfoAboutUser>();
+
+            foreach(var item in data)
+            {
+                ExamInfoAboutUser obj = new ExamInfoAboutUser()
+                {
+                    UserName = item.UserName,
+                    ExamID = item.ExamID,
+                    ExamName = item.ExamName,
+                    CourseID = item.CourseID,
+                    CourseName = item.CourseName,
+                    DateTime = item.DateTime
+                };
+
+                examInfoAboutUsers.Add(obj);
+            }
+
+            return examInfoAboutUsers;
+
+
+        }
+
         public async Task<UserExam> GetByID(int id)
         {
             return await DB.UserExam.FindAsync(id);
@@ -51,6 +97,9 @@ namespace CareerPath.Models.Repository.Manager
             DB.Entry(obj).State = EntityState.Modified;
             DB.SaveChanges();
         }
+
+
+
 
     }
 }
