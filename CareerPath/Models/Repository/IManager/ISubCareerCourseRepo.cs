@@ -17,5 +17,8 @@ namespace CareerPath.Models.Repository.IManager
 
         public void UpdateSubCareerCourse(int? id, SubCareerCourse subCareerCourse);
 
+
+        public Task<List<CoursesWithSubCareers>> GetAllCoursesWithSubCareers();
+
     }
 }

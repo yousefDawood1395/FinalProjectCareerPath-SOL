@@ -45,7 +45,33 @@ namespace CareerPath.Models.Repository.Manager
 
         }
 
+        public async Task<List<CoursesWithSubCareers>> GetAllCoursesWithSubCareers()
+        {
 
+            var data =await (from s in DB.SubCareer
+                        join sc in DB.SubCareerCourse on s.SubCareerId equals sc.SubCareerId
+                        join c in DB.Course on sc.CourseId equals c.CourseId
+                        select  new {courseId=c.CourseId, courseName=c.CourseName, subCareer=s.SubCareerId }).ToListAsync();
+
+         List<CoursesWithSubCareers> coursesWithSub = new List<CoursesWithSubCareers>();
+
+           foreach(var item in data)
+            {
+
+                CoursesWithSubCareers obj = new CoursesWithSubCareers()
+                {
+                    courseID = item.courseId,
+                    courseName = item.courseName,
+                    subCareerID = item.subCareer,
+                };
+
+                coursesWithSub.Add(obj);
+                
+            }
+            
+
+            return coursesWithSub;
+        }
 
         public async Task<List<SubCareerCourse>> GetAllSubCareerCourses()
         {

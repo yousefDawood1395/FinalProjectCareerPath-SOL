@@ -34,6 +34,14 @@ namespace CareerPath.Controllers
         }
 
 
+        [HttpGet("withSubCareer")]
+
+        public async Task<IActionResult> GetAllSubCareerCourses()
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            return Ok(await Db.GetAllCoursesWithSubCareers());
+        }
 
 
 
@@ -42,34 +50,6 @@ namespace CareerPath.Controllers
 
 
 
-
-        // PUT: api/SubCareerCourses/id
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateSubCareerCourse(int id, SubCareerCourse subCareerCourse)
-        //{
-        //    if (id != subCareerCourse.SubCareerId || id == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var data =await Context.SubCareerCourse.FindAsync(subCareerCourse.SubCareerId);
-        //    if (data == null)
-        //        return NotFound();
-
-
-        //    try
-        //    {
-        //        Db.UpdateSubCareerCourse(id, subCareerCourse);
-        //    }
-        //    catch (Exception e)
-        //    {
-
-        //        Console.WriteLine(e);
-        //        throw new TimeoutException("time exception out in subCareerCourse Controller Update");
-        //    }
-
-        //    return Ok(subCareerCourse);
-        //}
 
 
 

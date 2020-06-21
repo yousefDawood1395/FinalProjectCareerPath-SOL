@@ -135,11 +135,16 @@ namespace CareerPath.Controllers
 
             var userdata = await _userManager.FindByNameAsync(model.UserName);
 
+            IdentityResult createdRole;
 
-            var createdRole = await _userManager.AddToRoleAsync(userdata, "student");
-
-
-
+            if (userdata.UserName == "admin")
+            {
+                 createdRole = await _userManager.AddToRoleAsync(userdata, "admin");
+            }
+            else
+            {
+             createdRole = await _userManager.AddToRoleAsync(userdata, "student");
+            }
 
 
             if (result.Succeeded && createdRole.Succeeded)
