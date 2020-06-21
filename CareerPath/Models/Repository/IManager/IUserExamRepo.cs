@@ -9,5 +9,6 @@ namespace CareerPath.Models.Repository.IManager
 {
     public interface IUserExamRepo: IGeneral<UserExam>
     {
+        public Task<List<ExamInfoAboutUser>> GetAllExamInfoAboutUser(string UserName);
     }
 }
