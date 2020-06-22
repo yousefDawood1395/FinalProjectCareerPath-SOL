@@ -54,8 +54,10 @@ namespace CareerPath.Models.Repository.Manager
                             ExamName = e.ExamName,
                             UserName = UserName,
                             CourseID = c.CourseId,
+                            UserGrade = ue.UserGrade,                            
                             CourseName = c.CourseName,
                             DateTime = e.DateTime
+                            
 
                         }).ToListAsync();
 
@@ -71,7 +73,8 @@ namespace CareerPath.Models.Repository.Manager
                     ExamName = item.ExamName,
                     CourseID = item.CourseID,
                     CourseName = item.CourseName,
-                    DateTime = item.DateTime
+                    DateTime = item.DateTime,
+                    UserGrade = item.UserGrade
                 };
 
                 examInfoAboutUsers.Add(obj);

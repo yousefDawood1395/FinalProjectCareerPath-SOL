@@ -13,5 +13,6 @@ namespace CareerPath.Models.Entities
         public int CourseID { get; set; }
         public string CourseName { get; set; }
         public DateTime DateTime { get; set; }
+        public int? UserGrade { get; set; }
     }
 }
