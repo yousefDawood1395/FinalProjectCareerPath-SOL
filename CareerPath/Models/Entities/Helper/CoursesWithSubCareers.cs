@@ -10,6 +10,8 @@ namespace CareerPath.Models
         public int courseID { get; set; }
         public String courseName { get; set; }
         public int subCareerID { get; set; }
+        public string SubCareerName { get; set; }
+        public string Level { get; set; }
         public string Description { get; set; }
 
 
