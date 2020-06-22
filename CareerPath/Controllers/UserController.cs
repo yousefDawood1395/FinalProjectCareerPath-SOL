@@ -52,7 +52,7 @@ namespace CareerPath.Controllers
             _AppSetting = AppSetting.Value;
             _Db = Db;
             _environment = environment;
-            
+
 
         }
 
@@ -62,45 +62,45 @@ namespace CareerPath.Controllers
         [Route("Register")]
         //[EnableCors]
         // Post api/user/register
-        public async Task<object> Register([FromForm] FileUpload obj , [FromForm] MyUser model)
+        public async Task<object> Register([FromForm] FileUpload obj, [FromForm] MyUser model)
         {
             string imageName = null;
             if (!ModelState.IsValid)
-                return BadRequest(new { messaget = "invalid registeration info"});
+                return BadRequest(new { messaget = "invalid registeration info" });
 
-         try 
-         { 
+            try
+            {
 
-                
+
                 //var Len = obj.Files.Length;
 
 
-            if (obj.Files !=null)
-            {
+                if (obj.Files != null)
+                {
                     string Ext = Path.GetExtension(obj.Files.FileName);
 
-              if((Ext == ".jpg" || Ext == ".png"))
-              {
-
-
-                    if (!Directory.Exists(_environment.WebRootPath + "\\Upload\\"))
-                {
-                    Directory.CreateDirectory(_environment.WebRootPath + "\\Upload\\");
-                }
-
-                     imageName = Guid.NewGuid().ToString() + "-" + obj.Files.FileName;
-                    //var FilePath = Path.Combine(uploadDir)
-                    using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + imageName))
+                    if ((Ext == ".jpg" || Ext == ".png"))
                     {
-                        await obj.Files.CopyToAsync(fileStream);
-                        await fileStream.FlushAsync();
 
-                        //imageName = obj.Files.FileName;
 
+                        if (!Directory.Exists(_environment.WebRootPath + "\\Upload\\"))
+                        {
+                            Directory.CreateDirectory(_environment.WebRootPath + "\\Upload\\");
+                        }
+
+                        imageName = Guid.NewGuid().ToString() + "-" + obj.Files.FileName;
+                        //var FilePath = Path.Combine(uploadDir)
+                        using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Upload\\" + imageName))
+                        {
+                            await obj.Files.CopyToAsync(fileStream);
+                            await fileStream.FlushAsync();
+
+                            //imageName = obj.Files.FileName;
+
+                        }
                     }
-              }
 
-            }
+                }
                 //else
                 //{
                 //    //return BadRequest(new { message = "you should upload a photo" });
@@ -109,10 +109,10 @@ namespace CareerPath.Controllers
                 //}
 
             }
-         catch (Exception e)
-         {
+            catch (Exception e)
+            {
                 return BadRequest(e.Message.ToString());
-         }
+            }
 
             var user = new MyUser
             {
@@ -125,11 +125,11 @@ namespace CareerPath.Controllers
                 Country = model.Country,
                 Description = model.Description,
                 Image = imageName,
-                SubCareerId=model.SubCareerId
-                
+                SubCareerId = model.SubCareerId
+
             };
 
-        var result =await _userManager.CreateAsync(user, model.PasswordHash);
+            var result = await _userManager.CreateAsync(user, model.PasswordHash);
 
             //Assign Roles 
 
@@ -139,11 +139,11 @@ namespace CareerPath.Controllers
 
             if (userdata.UserName == "admin")
             {
-                 createdRole = await _userManager.AddToRoleAsync(userdata, "admin");
+                createdRole = await _userManager.AddToRoleAsync(userdata, "admin");
             }
             else
             {
-             createdRole = await _userManager.AddToRoleAsync(userdata, "student");
+                createdRole = await _userManager.AddToRoleAsync(userdata, "student");
             }
 
 
@@ -152,22 +152,22 @@ namespace CareerPath.Controllers
                 await _signInManager.SignInAsync(user, false);
 
 
-            //Assign Token 
+                //Assign Token 
 
-            var key = Encoding.UTF8.GetBytes(_AppSetting.JWT_Secret);
+                var key = Encoding.UTF8.GetBytes(_AppSetting.JWT_Secret);
 
-            var retrievedUser = await _userManager.FindByNameAsync(model.UserName);
+                var retrievedUser = await _userManager.FindByNameAsync(model.UserName);
 
                 //var role = await _roleManager.FindByIdAsync("1");
 
                 var role = await _userManager.GetRolesAsync(retrievedUser);
 
                 if (retrievedUser != null && await _userManager.CheckPasswordAsync(retrievedUser, model.PasswordHash))
-            {
-                var token = TokenHelper.CreateToken(retrievedUser, key);
-                var roleOfUser =role ;
-                return Ok(new {UserId = userdata.Id , SubCareerId = userdata.SubCareerId  , Token = token, role = roleOfUser });
-            }
+                {
+                    var token = TokenHelper.CreateToken(retrievedUser, key);
+                    var roleOfUser = role;
+                    return Ok(new { UserId = userdata.Id, SubCareerId = userdata.SubCareerId, Token = token, role = roleOfUser });
+                }
 
             }
 
@@ -189,11 +189,11 @@ namespace CareerPath.Controllers
 
             var retrievedUser = await _userManager.FindByNameAsync(model.UserName);
 
-            if(retrievedUser != null && await _userManager.CheckPasswordAsync(retrievedUser,model.Password))
+            if (retrievedUser != null && await _userManager.CheckPasswordAsync(retrievedUser, model.Password))
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
                 var roleOfUser = "student";
-                return Ok(new {UserId = retrievedUser.Id ,  Token = token, role = roleOfUser });
+                return Ok(new { UserId = retrievedUser.Id, Token = token, role = roleOfUser });
             }
 
             else
@@ -252,6 +252,21 @@ namespace CareerPath.Controllers
             }
 
             return (new { UserData, courseName = courseName, CourseId = courseID, userExam = examOfUser, ExamCourseId = examCourseId, ExamCourseName = examCourseName });
+        }
+
+
+
+        [HttpGet("GetUserByID/{id}")]
+
+        public async Task<IActionResult> GetUserByID(string id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound(new { message = "there is no user with this ID" });
+
+            return Ok(user);
         }
 
 
