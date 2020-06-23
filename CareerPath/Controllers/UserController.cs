@@ -290,9 +290,10 @@ namespace CareerPath.Controllers
 
 
             var retrievedUser =await  _userManager.FindByIdAsync(model.Id);
-            var result = await _userManager.CheckPasswordAsync(retrievedUser, model.PasswordHash);
             if (retrievedUser == null)
                 return NotFound(new { message = "invalid Edited Information User Not Found" });
+            var result = await _userManager.CheckPasswordAsync(retrievedUser, model.PasswordHash);
+            
 
             string imageName = retrievedUser.Image;
 
