@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using CareerPath.Models.Upload;
+using CareerPath.Models.Entities.Helper;
 
 namespace CareerPath.Controllers
 {
@@ -393,7 +394,35 @@ namespace CareerPath.Controllers
             return Ok(await _userManager.DeleteAsync(user));
         }
 
-       
+
+        [HttpPut("EditUserLevel")]
+        public async Task<IActionResult> EditUserLevel(EditUserLevel editUser)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var user = await _userManager.FindByIdAsync(editUser.UserID);
+
+            if (user == null)
+                return NotFound(new { message = "there is no user with this id" });
+
+            user.UserLevel = editUser.UserLevel;
+
+            try
+            {
+
+
+            var EditedUser = await _userManager.UpdateAsync(user);
+            }catch(Exception ex)
+            {
+                return BadRequest(new { message = ex.Message.ToString() });
+            }
+
+
+            return Ok(editUser);
+
+        }
+
+
 
     }
 
