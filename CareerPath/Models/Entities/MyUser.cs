@@ -33,7 +33,9 @@ namespace CareerPath.Models.Entities
         public string Lname { get; set; }
 
 
-
+        //[Required(AllowEmptyStrings =true)]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
 
 
         [MaxLength(20)]

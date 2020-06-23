@@ -188,12 +188,21 @@ namespace CareerPath.Controllers
             var key = Encoding.UTF8.GetBytes(_AppSetting.JWT_Secret);
 
             var retrievedUser = await _userManager.FindByNameAsync(model.UserName);
+            if (retrievedUser == null)
+                return NotFound(new { message = "your userName is inCorrect" });
 
-            if (retrievedUser != null && await _userManager.CheckPasswordAsync(retrievedUser, model.Password))
+            var result = await _userManager.CheckPasswordAsync(retrievedUser, model.Password);
+            if(!result)
+            {
+                return NotFound(new { message = "your password is incorrect" });
+            }
+
+            if (retrievedUser != null )
             {
                 var token = TokenHelper.CreateToken(retrievedUser, key);
-                var roleOfUser = "student";
-                return Ok(new { UserId = retrievedUser.Id, Token = token, role = roleOfUser });
+                var role = await _userManager.GetRolesAsync(retrievedUser);
+                //var roleOfUser = ;
+                return Ok(new { UserId = retrievedUser.Id, Token = token,  roleOfUser=role });
             }
 
             else
@@ -280,11 +289,13 @@ namespace CareerPath.Controllers
                 return BadRequest(new { message = "invalid Edited Information" });
 
 
-            var user =await  _userManager.FindByIdAsync(model.Id);
-            if (user == null)
+            var retrievedUser =await  _userManager.FindByIdAsync(model.Id);
+            if (retrievedUser == null)
                 return NotFound(new { message = "invalid Edited Information User Not Found" });
+            var result = await _userManager.CheckPasswordAsync(retrievedUser, model.PasswordHash);
+            
 
-            string imageName = user.Image;
+            string imageName = retrievedUser.Image;
 
             if(obj.Files!=null)
             {
@@ -312,22 +323,39 @@ namespace CareerPath.Controllers
                 }
 
             }
+            
            
+            if(retrievedUser!= null && result )
+            {
 
 
-            user.UserName = model.UserName;
-            user.Email = model.Email;
-            user.Fname = model.Fname;
-            user.Lname = model.Lname;
-            user.PhoneNumber = model.PhoneNumber;
-            user.UserLevel = model.UserLevel;
-            user.Country = model.Country;
-            user.Description = model.Description;
-            user.Image = imageName;
+                retrievedUser.UserName = model.UserName;
+                //retrievedUser.PasswordHash = model.NewPassword;
+                retrievedUser.Email = model.Email;
+                retrievedUser.Fname = model.Fname;
+                retrievedUser.Lname = model.Lname;
+                retrievedUser.PhoneNumber = model.PhoneNumber;
+                retrievedUser.UserLevel = model.UserLevel;
+                retrievedUser.Country = model.Country;
+                retrievedUser.Description = model.Description;
+                retrievedUser.Image = imageName;
+                
+                await _userManager.ChangePasswordAsync(retrievedUser, model.PasswordHash, model.NewPassword);
+                model.NewPassword = null;
 
+                   
 
-            var EditedUser = await _userManager.UpdateAsync(user);
-            return Ok(EditedUser);
+            }
+            try
+            {
+
+            var EditedUser = await _userManager.UpdateAsync(retrievedUser);
+            return Ok( new {status= EditedUser , message="you have successfuly updated your profile information"});
+            }catch(Exception ex)
+            {
+                return BadRequest(new { message = ex.Message.ToString() });
+            }
+
 
         }
 
