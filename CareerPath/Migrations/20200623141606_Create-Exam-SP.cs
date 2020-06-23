@@ -29,6 +29,9 @@ namespace CareerPath.Migrations
                            	
                            insert into UserExam (ExamId , UserId , CourseId , DateTime)
                            values (@IDOfExam , @userId , @IDOfCourse , @Date)
+
+                           insert into UserCourse (CourseId , UserId , StartDate)
+						   values (@IDOfCourse , @userId , @Date)       
                             
                            
                            insert into dbo.QuestExam(ExamId , QuestId ,QuestName ,RightAns)

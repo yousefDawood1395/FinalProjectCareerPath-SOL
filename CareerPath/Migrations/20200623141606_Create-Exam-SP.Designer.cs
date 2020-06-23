@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareerPath.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200618115305_Create-Exam-SP")]
+    [Migration("20200623141606_Create-Exam-SP")]
     partial class CreateExamSP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,9 +66,38 @@ namespace CareerPath.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("Level")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
                     b.HasKey("CourseId");
 
                     b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("CareerPath.Models.Entities.CoursePath", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Payment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CoursePaths");
                 });
 
             modelBuilder.Entity("CareerPath.Models.Entities.Exams", b =>
@@ -81,6 +110,9 @@ namespace CareerPath.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("ExamDuration")
                         .HasColumnType("int");
 
@@ -91,10 +123,7 @@ namespace CareerPath.Migrations
                     b.Property<int?>("TotalGrade")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("dateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("userGrade")
+                    b.Property<int?>("UserGrade")
                         .HasColumnType("int");
 
                     b.HasKey("ExamId");
@@ -199,7 +228,7 @@ namespace CareerPath.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SubCareerId")
+                    b.Property<int>("SubCareerId")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -551,6 +580,15 @@ namespace CareerPath.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("CareerPath.Models.Entities.CoursePath", b =>
+                {
+                    b.HasOne("CareerPath.Models.Entities.Course", "Course")
+                        .WithMany("CoursePaths")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CareerPath.Models.Entities.Exams", b =>
                 {
                     b.HasOne("CareerPath.Models.Entities.Course", "Course")
@@ -561,8 +599,10 @@ namespace CareerPath.Migrations
             modelBuilder.Entity("CareerPath.Models.Entities.MyUser", b =>
                 {
                     b.HasOne("CareerPath.Models.Entities.SubCareer", "SubCareer")
-                        .WithMany("users")
-                        .HasForeignKey("SubCareerId");
+                        .WithMany("Users")
+                        .HasForeignKey("SubCareerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CareerPath.Models.Entities.QuestionExam", b =>
