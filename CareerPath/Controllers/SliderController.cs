@@ -118,7 +118,7 @@ namespace CareerPath.Controllers
 
         // POST: api/Courses
         [HttpPost]
-        public async Task<IActionResult>  AddSlider([FromForm] FileUpload obj,[FromForm] Slider _slider)
+        public async Task<IActionResult>  AddSlider([FromForm] FileUpload obj,[FromBody] Slider _slider)
         {
             string imageName = null;
             if (_slider == null)
