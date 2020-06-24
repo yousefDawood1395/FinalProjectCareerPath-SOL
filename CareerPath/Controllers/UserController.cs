@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using CareerPath.Models.Upload;
 using CareerPath.Models.Entities.Helper;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace CareerPath.Controllers
 {
@@ -450,6 +451,55 @@ namespace CareerPath.Controllers
 
 
             return Ok(editUserStatus);
+
+        }
+
+
+        [HttpPut("changePassword")]
+        public async Task<IActionResult> ChangePassword(changePassword obj)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var user = await _userManager.FindByIdAsync(obj.UserID);
+
+            if (user == null)
+                return NotFound(new { messaeg = "there is no user with this id" });
+
+
+            var result = await _userManager.CheckPasswordAsync(user, obj.oldPassword);
+
+            if (!result)
+                return BadRequest(new { message = "incorrect password" });
+
+
+            //user.PasswordHash = obj.oldPassword;
+            //user.NewPassword = obj.newPassword;
+
+
+          IdentityResult checkedPasswordResult =  await _userManager.ChangePasswordAsync(user, obj.oldPassword,obj.newPassword);
+            if(checkedPasswordResult.Succeeded)
+            {
+
+            //user.NewPassword = null;
+
+
+            try
+            {
+
+                var EditedUser = await _userManager.UpdateAsync(user);
+
+                return Ok(new { status = EditedUser, message = "you have successfuly updated your password" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message.ToString() });
+            }
+            }
+            else
+            {
+                return BadRequest(new { message = "There is an problem Occured Please try again Later" });
+            }
+
 
         }
 
