@@ -331,7 +331,7 @@ namespace CareerPath.Controllers
 
 
                 retrievedUser.UserName = model.UserName;
-                //retrievedUser.PasswordHash = model.NewPassword;
+                retrievedUser.PasswordHash = model.NewPassword;
                 retrievedUser.Email = model.Email;
                 retrievedUser.Fname = model.Fname;
                 retrievedUser.Lname = model.Lname;

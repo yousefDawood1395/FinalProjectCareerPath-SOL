@@ -47,7 +47,6 @@ namespace CareerPath.Models.Entities
         public string Description { get; set; }
 
 
-        [Required]
         public string Country { get; set; }
 
 
