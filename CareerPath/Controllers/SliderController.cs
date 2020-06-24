@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CareerPath.Data;
 using CareerPath.Models.Entities;
 using CareerPath.Models.Repository.IManager;
+using CareerPath.Models.Upload;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +20,14 @@ namespace CareerPath.Controllers
     {
         ISliderRepo Db;
         ApplicationDbContext Context;
+        public static IWebHostEnvironment _environment;
 
-        public SliderController(ISliderRepo _Db, ApplicationDbContext _context)
+
+        public SliderController(ISliderRepo _Db, ApplicationDbContext _context , IWebHostEnvironment environment)
         {
             Db = _Db;
             Context = _context;
+            _environment = environment;
         }
 
         // GET: api/Sliders
@@ -68,13 +74,53 @@ namespace CareerPath.Controllers
 
         // POST: api/Courses
         [HttpPost]
-        public IActionResult AddSlider(Slider _slider)
+        public async Task<IActionResult>  AddSlider([FromForm] FileUpload obj,[FromForm] Slider _slider)
         {
+            string imageName = null;
             if (_slider == null)
                 return BadRequest();
 
-            Db.AddSlider(_slider);
-            return Created("Slider has been added", _slider);
+            if (obj.Files == null)
+                return BadRequest(new { message = "you should enter a picture for your slider" });
+
+            if (obj.Files != null)
+            {
+                string Ext = Path.GetExtension(obj.Files.FileName);
+
+                if ((Ext == ".jpg" || Ext == ".png"))
+                {
+
+
+                    if (!Directory.Exists(_environment.WebRootPath + "\\Slider\\"))
+                    {
+                        Directory.CreateDirectory(_environment.WebRootPath + "\\Slider\\");
+                    }
+
+                    imageName = Guid.NewGuid().ToString() + "-" + obj.Files.FileName;
+                    //var FilePath = Path.Combine(uploadDir)
+                    using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Slider\\" + imageName))
+                    {
+                        await obj.Files.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
+
+                        //imageName = obj.Files.FileName;
+
+                    }
+                }
+
+            }
+
+            var slider = new Slider()
+            {
+                Image = imageName,
+                Description = _slider.Description,
+                Link = _slider.Link,
+                Title = _slider.Title,
+
+            };
+
+            Db.AddSlider(slider);
+            return Created("Slider has been added", slider);
         }
 
         // DELETE: api/Courses/5

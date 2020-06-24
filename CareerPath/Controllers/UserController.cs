@@ -284,7 +284,7 @@ namespace CareerPath.Controllers
         [Route("EditProfile")]
         [Authorize]
 
-        public async Task<IActionResult> UpdateProfile([FromForm] FileUpload obj, [FromForm] MyUser model)
+        public async Task<IActionResult> UpdateProfile([FromForm] FileUpload obj , [FromForm] MyUser model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "invalid Edited Information" });
