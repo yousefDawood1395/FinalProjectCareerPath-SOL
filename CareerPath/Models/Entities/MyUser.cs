@@ -52,6 +52,8 @@ namespace CareerPath.Models.Entities
 
         public string Image { get; set; }
 
+        public string UserStatus { get; set; }
+
         public virtual ICollection<UserCourse> UserCourse { get; set; }
         public virtual ICollection<UserExam> UserExam { get; set; }
 

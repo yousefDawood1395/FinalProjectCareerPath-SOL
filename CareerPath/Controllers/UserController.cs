@@ -126,7 +126,8 @@ namespace CareerPath.Controllers
                 Country = model.Country,
                 Description = model.Description,
                 Image = imageName,
-                SubCareerId = model.SubCareerId
+                SubCareerId = model.SubCareerId,
+                UserStatus = "UnCompleted",
 
             };
 
@@ -340,7 +341,9 @@ namespace CareerPath.Controllers
                 retrievedUser.Country = model.Country;
                 retrievedUser.Description = model.Description;
                 retrievedUser.Image = imageName;
-                
+                retrievedUser.UserStatus = "UnCompleted";
+
+
                 await _userManager.ChangePasswordAsync(retrievedUser, model.PasswordHash, model.NewPassword);
                 model.NewPassword = null;
 
@@ -419,6 +422,33 @@ namespace CareerPath.Controllers
 
 
             return Ok(editUser);
+
+        }
+
+        [HttpPut("EditUserStatus")]
+        public async Task<IActionResult> EditUserStatus (EditUserStatus editUserStatus)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var user = await _userManager.FindByIdAsync(editUserStatus.UserID);
+            if (user == null)
+                return NotFound(new { message = "there is no user with this id" });
+
+            user.UserStatus = editUserStatus.UserStatus;
+
+            try
+            {
+
+
+                var EditedUser = await _userManager.UpdateAsync(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message.ToString() });
+            }
+
+
+            return Ok(editUserStatus);
 
         }
 
