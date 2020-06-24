@@ -54,14 +54,58 @@ namespace CareerPath.Controllers
 
         // PUT: api/Courses/5
         [HttpPut("{id}")]
-        public IActionResult UpdateSlider(int id, Slider _slider)
+        public async Task<IActionResult> UpdateSlider(int id, [FromForm] FileUpload obj,[FromForm] Slider _slider)
         {
+            string imageName = null;
+
             if (id != _slider.SliderID || id == null)
+                return BadRequest(new {message="you should sent equal id's" });
+
+            if (_slider == null)
                 return BadRequest();
+
+            var retrievedSlider = await Context.Slider.FindAsync(id);
+
+            if (id == null)
+                return NotFound(new { message = "there is no slider with this id" });
+
+
+            if (obj.Files != null)
+            {
+                string Ext = Path.GetExtension(obj.Files.FileName);
+
+                if ((Ext == ".jpg" || Ext == ".png"))
+                {
+
+
+                    if (!Directory.Exists(_environment.WebRootPath + "\\Slider\\"))
+                    {
+                        Directory.CreateDirectory(_environment.WebRootPath + "\\Slider\\");
+                    }
+
+                    imageName = Guid.NewGuid().ToString() + "-" + obj.Files.FileName;
+                    //var FilePath = Path.Combine(uploadDir)
+                    using (FileStream fileStream = System.IO.File.Create(_environment.WebRootPath + "\\Slider\\" + imageName))
+                    {
+                        await obj.Files.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
+
+                        //imageName = obj.Files.FileName;
+
+                    }
+                }
+
+            }
 
             try
             {
-                Db.UpdateSlider(id, _slider);
+                //Db.UpdateSlider(id, _slider);
+                retrievedSlider.Link = _slider.Link;
+                retrievedSlider.Image = imageName;
+                retrievedSlider.Title = _slider.Title;
+                retrievedSlider.Description = _slider.Description;
+
+               await Context.SaveChangesAsync();
             }
             catch (Exception e)
             {
@@ -69,7 +113,7 @@ namespace CareerPath.Controllers
                 throw new TimeoutException("time exception out in Slider Controller Update");
             }
 
-            return Ok(_slider);
+            return Ok(retrievedSlider);
         }
 
         // POST: api/Courses
