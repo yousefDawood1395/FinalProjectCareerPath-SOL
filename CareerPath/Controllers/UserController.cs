@@ -285,7 +285,7 @@ namespace CareerPath.Controllers
         [Route("EditProfile")]
         [Authorize]
 
-        public async Task<IActionResult> UpdateProfile([FromForm] FileUpload obj , [FromForm] MyUser model)
+        public async Task<IActionResult> UpdateProfile([FromForm] FileUpload obj , [FromBody] MyUser model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { message = "invalid Edited Information" });
@@ -294,7 +294,8 @@ namespace CareerPath.Controllers
             var retrievedUser =await  _userManager.FindByIdAsync(model.Id);
             if (retrievedUser == null)
                 return NotFound(new { message = "invalid Edited Information User Not Found" });
-            var result = await _userManager.CheckPasswordAsync(retrievedUser, model.PasswordHash);
+
+            //var result = await _userManager.CheckPasswordAsync(retrievedUser, model.PasswordHash);
             
 
             string imageName = retrievedUser.Image;
@@ -327,7 +328,7 @@ namespace CareerPath.Controllers
             }
             
            
-            if(retrievedUser!= null && result )
+            if(retrievedUser!= null  )
             {
 
 
@@ -344,8 +345,8 @@ namespace CareerPath.Controllers
                 retrievedUser.UserStatus = "UnCompleted";
 
 
-                await _userManager.ChangePasswordAsync(retrievedUser, model.PasswordHash, model.NewPassword);
-                model.NewPassword = null;
+                //await _userManager.ChangePasswordAsync(retrievedUser, model.PasswordHash, model.NewPassword);
+                //model.NewPassword = null;
 
                    
 

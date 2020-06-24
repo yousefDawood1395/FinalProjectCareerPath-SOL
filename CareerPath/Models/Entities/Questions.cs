@@ -21,7 +21,7 @@ namespace CareerPath.Models.Entities
         public int QuestId { get; set; }
 
         //[Required]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string QuestName { get; set; }
 
 
@@ -29,12 +29,12 @@ namespace CareerPath.Models.Entities
         public int? Grade { get; set; }
 
         //[Required]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string A { get; set; }
 
 
         //[Required]
-        [MaxLength(150)]
+        //[MaxLength(150)]
         public string B { get; set; }
 
 
