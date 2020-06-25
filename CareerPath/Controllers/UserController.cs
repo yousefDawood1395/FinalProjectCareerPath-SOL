@@ -356,7 +356,14 @@ namespace CareerPath.Controllers
             {
 
             var EditedUser = await _userManager.UpdateAsync(retrievedUser);
+
+                if(EditedUser.Succeeded)
             return Ok( new {status= EditedUser , message="you have successfuly updated your profile information"});
+
+                else
+                {
+                    return BadRequest("there is already userName with this name");
+                }
             }catch(Exception ex)
             {
                 return BadRequest(new { message = ex.Message.ToString() });
